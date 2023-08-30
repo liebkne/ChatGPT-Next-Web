@@ -317,6 +317,7 @@ export const useChatStore = create<ChatStore>()(
 
         // make request
         api.llm.chat({
+          chat_id: session.id,
           messages: sendMessages,
           config: { ...modelConfig, stream: true },
           onUpdate(message) {
@@ -505,6 +506,7 @@ export const useChatStore = create<ChatStore>()(
             }),
           );
           api.llm.chat({
+            chat_id: session.id,
             messages: topicMessages,
             config: {
               model: getSummarizeModel(session.mask.modelConfig.model),
@@ -554,6 +556,7 @@ export const useChatStore = create<ChatStore>()(
           modelConfig.sendMemory
         ) {
           api.llm.chat({
+            chat_id: session.id,
             messages: toBeSummarizedMsgs.concat(
               createMessage({
                 role: "system",

@@ -455,64 +455,6 @@ export function ChatActions(props: {
           icon={<BottomIcon />}
         />
       )}
-      {props.hitBottom && (
-        <ChatAction
-          onClick={props.showPromptModal}
-          text={Locale.Chat.InputActions.Settings}
-          icon={<SettingsIcon />}
-        />
-      )}
-
-      <ChatAction
-        onClick={nextTheme}
-        text={Locale.Chat.InputActions.Theme[theme]}
-        icon={
-          <>
-            {theme === Theme.Auto ? (
-              <AutoIcon />
-            ) : theme === Theme.Light ? (
-              <LightIcon />
-            ) : theme === Theme.Dark ? (
-              <DarkIcon />
-            ) : null}
-          </>
-        }
-      />
-
-      <ChatAction
-        onClick={props.showPromptHints}
-        text={Locale.Chat.InputActions.Prompt}
-        icon={<PromptIcon />}
-      />
-
-      <ChatAction
-        onClick={() => {
-          navigate(Path.Masks);
-        }}
-        text={Locale.Chat.InputActions.Masks}
-        icon={<MaskIcon />}
-      />
-
-      <ChatAction
-        text={Locale.Chat.InputActions.Clear}
-        icon={<BreakIcon />}
-        onClick={() => {
-          chatStore.updateCurrentSession((session) => {
-            if (session.clearContextIndex === session.messages.length) {
-              session.clearContextIndex = undefined;
-            } else {
-              session.clearContextIndex = session.messages.length;
-              session.memoryPrompt = ""; // will clear memory
-            }
-          });
-        }}
-      />
-
-      <ChatAction
-        onClick={() => setShowModelSelector(true)}
-        text={currentModel}
-        icon={<RobotIcon />}
-      />
 
       {showModelSelector && (
         <Selector
@@ -653,7 +595,6 @@ function _Chat() {
   // chat commands shortcuts
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
-    newm: () => navigate(Path.NewChat),
     prev: () => chatStore.nextSession(-1),
     next: () => chatStore.nextSession(1),
     clear: () =>
@@ -935,7 +876,8 @@ function _Chat() {
 
     const isTouchTopEdge = e.scrollTop <= edgeThreshold;
     const isTouchBottomEdge = bottomHeight >= e.scrollHeight - edgeThreshold;
-    const isHitBottom = bottomHeight >= e.scrollHeight - (isMobileScreen ? 0 : 10);
+    const isHitBottom =
+      bottomHeight >= e.scrollHeight - (isMobileScreen ? 0 : 10);
 
     const prevPageMsgIndex = msgRenderIndex - CHAT_PAGE_SIZE;
     const nextPageMsgIndex = msgRenderIndex + CHAT_PAGE_SIZE;
@@ -1041,15 +983,6 @@ function _Chat() {
           </div>
         </div>
         <div className="window-actions">
-          {!isMobileScreen && (
-            <div className="window-action-button">
-              <IconButton
-                icon={<RenameIcon />}
-                bordered
-                onClick={() => setIsEditingMessage(true)}
-              />
-            </div>
-          )}
           <div className="window-action-button">
             <IconButton
               icon={<ExportIcon />}
@@ -1074,12 +1007,6 @@ function _Chat() {
             </div>
           )}
         </div>
-
-        <PromptToast
-          showToast={!hitBottom}
-          showModal={showPromptModal}
-          setShowModal={setShowPromptModal}
-        />
       </div>
 
       <div
@@ -1158,20 +1085,15 @@ function _Chat() {
                               />
 
                               <ChatAction
-                                text={Locale.Chat.Actions.Delete}
-                                icon={<DeleteIcon />}
-                                onClick={() => onDelete(message.id ?? i)}
-                              />
-
-                              <ChatAction
-                                text={Locale.Chat.Actions.Pin}
-                                icon={<PinIcon />}
-                                onClick={() => onPinMessage(message)}
-                              />
-                              <ChatAction
                                 text={Locale.Chat.Actions.Copy}
                                 icon={<CopyIcon />}
                                 onClick={() => copyToClipboard(message.content)}
+                              />
+
+                              <ChatAction
+                                text={Locale.Chat.Actions.Delete}
+                                icon={<DeleteIcon />}
+                                onClick={() => onDelete(message.id ?? i)}
                               />
                             </>
                           )}

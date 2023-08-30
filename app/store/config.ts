@@ -25,14 +25,14 @@ export const DEFAULT_CONFIG = {
   avatar: "1f603",
   fontSize: 14,
   theme: Theme.Auto as Theme,
-  tightBorder: !!getClientConfig()?.isApp,
-  sendPreviewBubble: true,
+  tightBorder: true,
+  sendPreviewBubble: false,
   enableAutoGenerateTitle: true,
   sidebarWidth: 300,
 
-  disablePromptHint: false,
+  disablePromptHint: true,
 
-  dontShowMaskSplashScreen: false, // dont show splash screen when create chat
+  dontShowMaskSplashScreen: true, // dont show splash screen when create chat
   hideBuiltinMasks: false, // dont add builtin masks
 
   customModels: "",
